@@ -24,7 +24,7 @@ const getBooks = function () {
                         <img src="${book.img}" class="card-img-top" alt="${book.title}">
                         <div class="card-body">
                             <h5 class="card-title">${book.title}</h5>
-                            <p class="card-text">Prezzo: €${book.price.toFixed(2)}</p>
+                            <p class="card-text">Prezzo: €${book.price.toFixed(2)}</p> 
                              <div class="mt-auto">
                             <button class="btn btn-danger remove-btn  w-100">Scarta</button>
                              <button class="btn btn-primary add-to-cart w-100 mt-2">Compra ora</button>
@@ -37,8 +37,39 @@ const getBooks = function () {
                 removeBtn.addEventListener("click", () => {
                     col.remove();
                 });
+                const addToCart = col.querySelector(".add-to-cart")
+
+                addToCart.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    let carrell = localStorage.getItem("carrell");
+                    if (carrell === undefined || carrell === null) {
+                        carrell = []
+                    }
+                    else {
+                        carrell = JSON.parse(carrell);
+                    }
+
+                    carrell.push(book.title);
+
+                    localStorage.setItem("carrell", JSON.stringify(carrell));
+                    let lista = document.getElementById("lista")
+                    const newLi = document.createElement('li')
+                    newLi.classList.add('list-group-item')
+                    newLi.innerText = book.title + " " + book.price.toFixed(2) + "€"
+                    lista.appendChild(newLi)
+
+                    console.log(carrell);
+                })
+
+
 
             });
+
+
+
+
+
         })
         .catch((err) => {
             console.log('Errore', err);
